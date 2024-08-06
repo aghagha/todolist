@@ -53,4 +53,12 @@ public extension Date {
         let seconds = TimeInterval(timezone.secondsFromGMT(for: self))
         return Date(timeInterval: seconds, since: self)
     }
+    
+    var hour: Int? {
+        Calendar.current.component(.hour, from: self)
+    }
+    
+    var minute: Int? {
+        Calendar.current.component(.minute, from: self)
+    }
 }

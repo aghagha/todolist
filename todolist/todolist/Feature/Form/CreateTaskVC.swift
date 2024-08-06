@@ -16,12 +16,28 @@ class CreateTaskVC: UIViewController {
     internal lazy var descriptionField: UITextView = UITextView()
     internal lazy var descriptionPlaceholderLabel : UILabel = UILabel()
     internal lazy var dateField: UITextView = UITextView()
+    internal lazy var timeField: UITextView = UITextView()
     
     internal var router: Router = Router.shared
     
     private var selectedDate: Date? {
         didSet {
             dateField.text = selectedDate?.formattedDateForDisplay ?? ""
+        }
+    }
+    
+    private var isUsingTime: Bool = false {
+        didSet {
+            timeField.isHidden = !isUsingTime
+        }
+    }
+    
+    private var selectedTime: Date? {
+        didSet {
+            guard let date = selectedTime else {
+                return
+            }
+            timeField.text = date.timeFormatted
         }
     }
     
@@ -66,7 +82,7 @@ extension CreateTaskVC {
     
     private func setupTitleField() {
         let label: UILabel = UILabel()
-        label.font = .boldSystemFont(ofSize: 20)
+        label.font = .boldSystemFont(ofSize: 18)
         label.text = "Title"
         label.set(superView: container)
         
@@ -98,7 +114,7 @@ extension CreateTaskVC {
     
     private func setupDescriptionField() {
         let label: UILabel = UILabel()
-        label.font = .boldSystemFont(ofSize: 20)
+        label.font = .boldSystemFont(ofSize: 18)
         label.text = "Description"
         label.set(superView: container)
         
@@ -150,7 +166,7 @@ extension CreateTaskVC {
     
     private func setupDateField() {
         let label: UILabel = UILabel()
-        label.font = .boldSystemFont(ofSize: 20)
+        label.font = .boldSystemFont(ofSize: 18)
         label.text = "Date"
         label.set(superView: container)
         
@@ -176,8 +192,7 @@ extension CreateTaskVC {
             dateField.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 16),
             dateField.leadingAnchor.constraint(equalTo: label.leadingAnchor),
             dateField.trailingAnchor.constraint(equalTo: label.trailingAnchor),
-            dateField.heightAnchor.constraint(equalToConstant: 54),
-            dateField.bottomAnchor.constraint(equalTo: container.bottomAnchor)
+            dateField.heightAnchor.constraint(equalToConstant: 54)
         ])
         
         setupCalendarIcon()
@@ -197,27 +212,93 @@ extension CreateTaskVC {
     }
     
     private func setupTimeField() {
+        let imageView: UIImageView = UIImageView(image: UIImage(systemName: "stopwatch"))
+        imageView.setImageColor(color: .tertiaryLabel)
+        imageView.contentMode = .scaleAspectFill
+        imageView.set(superView: container)
+        
+        NSLayoutConstraint.activate([
+            imageView.topAnchor.constraint(equalTo: dateField.bottomAnchor, constant: 24),
+            imageView.leadingAnchor.constraint(equalTo: dateField.leadingAnchor),
+            imageView.widthAnchor.constraint(equalToConstant: 24)
+        ])
+        
+        let label: UILabel = UILabel()
+        label.font = .boldSystemFont(ofSize: 18)
+        label.text = "Time"
+        label.set(superView: container)
+        
+        NSLayoutConstraint.activate([
+            label.centerYAnchor.constraint(equalTo: imageView.centerYAnchor),
+            label.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 16)
+        ])
+        
+        let toggle: UISwitch = UISwitch()
+        toggle.isOn = false
+        toggle.onTintColor = .systemBlue
+        toggle.addTarget(self, action: #selector(didToggleSwitch(sender:)), for: .valueChanged)
+        toggle.set(superView: container)
+        
+        NSLayoutConstraint.activate([
+            toggle.trailingAnchor.constraint(equalTo: dateField.trailingAnchor),
+            toggle.centerYAnchor.constraint(equalTo: label.centerYAnchor),
+            toggle.heightAnchor.constraint(equalToConstant: 24)
+        ])
+        
+        timeField.set(superView: container)
+        timeField.delegate = self
+        timeField.textContainer.maximumNumberOfLines = 1
+        timeField.textContainer.lineBreakMode = .byTruncatingTail
+        timeField.font = .systemFont(ofSize: 18)
+        timeField.textContainerInset = UIEdgeInsets(top: 16, left: 14, bottom: 16, right: 14)
+        timeField.isScrollEnabled = false
+        
+        timeField.isUserInteractionEnabled = true
+        timeField.backgroundColor = .systemGray6
+        timeField.layer.cornerRadius = 8
+        
+        NSLayoutConstraint.activate([
+            timeField.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 16),
+            timeField.leadingAnchor.constraint(equalTo: dateField.leadingAnchor),
+            timeField.trailingAnchor.constraint(equalTo: dateField.trailingAnchor),
+            timeField.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -32)
+        ])
+        
+        setupPlaceholderLabel(to: timeField, placeholder: "Set time")
+        timeField.isHidden = true
         
     }
-}
-
-extension CreateTaskVC: UITextFieldDelegate {
     
+    @objc func didToggleSwitch(sender: UISwitch) {
+        isUsingTime = sender.isOn
+    }
 }
 
 extension CreateTaskVC: UITextViewDelegate {
     func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
-        guard textView == dateField else {
+        guard textView == dateField || textView == timeField else {
             return true
         }
         
-        router.presentDatePicker(from: self, selectedDate: selectedDate) { [weak self] selectedDate in
-            guard let selectedDate = selectedDate else {
-                return
+        if textView == dateField {
+            router.presentDatePicker(from: self, selectedDate: selectedDate) { [weak self] selectedDate in
+                guard let selectedDate = selectedDate else {
+                    return
+                }
+                self?.dateField.resignFirstResponder()
+                self?.selectedDate = selectedDate
+                self?.textViewDidChange(textView)
             }
-            self?.dateField.resignFirstResponder()
-            self?.selectedDate = selectedDate
-            self?.textViewDidChange(textView)
+        } else {
+            router.presentTimePicker(from: self, selectedDate: selectedTime) { [weak self] selectedTime in
+                guard let selectedTime = selectedTime else {
+                    return
+                }
+                
+                self?.timeField.resignFirstResponder()
+                self?.selectedTime = selectedTime
+                self?.textViewDidChange(textView)
+            }
         }
         return false
     }

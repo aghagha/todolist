@@ -22,4 +22,14 @@ class Router {
         datePicker.didSelectDate = closure
         vc.present(datePicker, animated: true)
     }
+    
+    func presentTimePicker(from vc: UIViewController, selectedDate: Date?, closure: ((Date?) -> Void)?) {
+        let timePicker: TimePickerVC = TimePickerVC()
+        if let date = selectedDate {
+            timePicker.selectedHour = date.hour
+            timePicker.selectedHour = date.minute
+        }
+        timePicker.didSelectDate = closure
+        vc.present(timePicker, animated: true)
+    }
 }
