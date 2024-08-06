@@ -15,4 +15,11 @@ class Router {
         let form: CreateTaskVC = CreateTaskVC()
         vc.navigationController?.pushViewController(form, animated: true)
     }
+    
+    func presentDatePicker(from vc: UIViewController, selectedDate: Date?, closure: ((Date?) -> Void)?) {
+        let datePicker: DatePickerVC = DatePickerVC()
+        datePicker.selectedDate = selectedDate
+        datePicker.didSelectDate = closure
+        vc.present(datePicker, animated: true)
+    }
 }

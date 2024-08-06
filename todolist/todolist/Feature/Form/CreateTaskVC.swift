@@ -17,6 +17,14 @@ class CreateTaskVC: UIViewController {
     internal lazy var descriptionPlaceholderLabel : UILabel = UILabel()
     internal lazy var dateField: UITextView = UITextView()
     
+    internal var router: Router = Router.shared
+    
+    private var selectedDate: Date? {
+        didSet {
+            dateField.text = selectedDate?.formattedDateForDisplay ?? ""
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Add New Task"
@@ -198,6 +206,22 @@ extension CreateTaskVC: UITextFieldDelegate {
 }
 
 extension CreateTaskVC: UITextViewDelegate {
+    func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
+        guard textView == dateField else {
+            return true
+        }
+        
+        router.presentDatePicker(from: self, selectedDate: selectedDate) { [weak self] selectedDate in
+            guard let selectedDate = selectedDate else {
+                return
+            }
+            self?.dateField.resignFirstResponder()
+            self?.selectedDate = selectedDate
+            self?.textViewDidChange(textView)
+        }
+        return false
+    }
+    
     func textViewDidChange(_ textView: UITextView) {
         guard let placeholderLabel = textView.subviews.first(where: { $0.tag == -1 }) else {
              return
