@@ -52,9 +52,11 @@ extension TodoListVC {
         tableView.backgroundColor = .systemGray6
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.estimatedRowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 40
         tableView.rowHeight = UITableView.automaticDimension
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "UITableViewCell")
+        tableView.register(TaskCell.self, forCellReuseIdentifier: TaskCell.reuseIdentifier)
+        tableView.separatorStyle = .none
+        tableView.showsVerticalScrollIndicator = false
         
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -76,10 +78,11 @@ extension TodoListVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let task: TaskModel = vm.tasks[indexPath.row]
-        let cell: UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "UITableViewCell", for: indexPath)
-        cell.textLabel?.text = task.date.timeFormatted
-        cell.detailTextLabel?.text = task.date.timeFormatted
+        guard let cell: TaskCell = tableView.dequeueReusableCell(withIdentifier: TaskCell.reuseIdentifier, for: indexPath) as? TaskCell else {
+            return UITableViewCell()
+        }
+        
+        cell.task = vm.tasks[indexPath.row]
         return cell
     }
 }
