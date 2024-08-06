@@ -10,7 +10,7 @@ import UIKit
 
 class TaskCell: UITableViewCell {
     internal lazy var containerView: UIView = UIView()
-    internal lazy var checkbox: UIView = UIView()
+    internal lazy var checkbox: CheckboxView = CheckboxView()
     internal lazy var stackView: UIStackView = UIStackView()
     internal lazy var titleLabel: UILabel = UILabel()
     internal lazy var timeLabel: UILabel = UILabel()
@@ -24,6 +24,7 @@ class TaskCell: UITableViewCell {
                 timeLabel.text = ""
             }
             timeLabel.isHidden = !(task?.hasTime ?? false)
+            checkbox.isSelected = task?.isCompleted ?? false
         }
     }
     
@@ -33,7 +34,7 @@ class TaskCell: UITableViewCell {
     }
     
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not supported")
+        fatalError("init(coder:) is not supported")
     }
 }
 
@@ -63,13 +64,12 @@ extension TaskCell {
     
     private func setupCheckbox() {
         checkbox.set(superView: containerView)
-        checkbox.backgroundColor = .systemBlue
-        checkbox.layer.cornerRadius = 4
+        checkbox.didSelect = { [weak self] selected in
+            self?.task?.isCompleted = selected
+        }
         
         NSLayoutConstraint.activate([
-            checkbox.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 16),
-            checkbox.heightAnchor.constraint(equalToConstant: 24),
-            checkbox.widthAnchor.constraint(equalToConstant: 24),
+            checkbox.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 16)
         ])
     }
     
