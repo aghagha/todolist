@@ -15,6 +15,7 @@ class CreateTaskVC: UIViewController {
     internal lazy var titleField: UITextView = UITextView()
     internal lazy var descriptionField: UITextView = UITextView()
     internal lazy var descriptionPlaceholderLabel : UILabel = UILabel()
+    internal lazy var dateField: UITextView = UITextView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -94,7 +95,7 @@ extension CreateTaskVC {
         label.set(superView: container)
         
         NSLayoutConstraint.activate([
-            label.topAnchor.constraint(equalTo: titleField.bottomAnchor, constant: 32),
+            label.topAnchor.constraint(equalTo: titleField.bottomAnchor, constant: 24),
             label.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 32),
             label.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -32)
         ])
@@ -115,14 +116,13 @@ extension CreateTaskVC {
             descriptionField.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 16),
             descriptionField.leadingAnchor.constraint(equalTo: label.leadingAnchor),
             descriptionField.trailingAnchor.constraint(equalTo: label.trailingAnchor),
-            descriptionField.bottomAnchor.constraint(equalTo: container.bottomAnchor),
             descriptionField.heightAnchor.constraint(equalToConstant: 98)
         ])
         
         setupPlaceholderLabel(to: descriptionField, placeholder: "Description text")
     }
     
-    private func setupPlaceholderLabel(to textView: UITextView, placeholder: String) {
+    private func setupPlaceholderLabel(to textView: UITextView, placeholder: String, leadingPadding: CGFloat = 16) {
         let placeholderLabel: UILabel = UILabel()
         placeholderLabel.tag = -1
         placeholderLabel.text = placeholder
@@ -136,12 +136,56 @@ extension CreateTaskVC {
         
         NSLayoutConstraint.activate([
             placeholderLabel.topAnchor.constraint(equalTo: textView.topAnchor, constant: 16),
-            placeholderLabel.leadingAnchor.constraint(equalTo: textView.leadingAnchor, constant: 16)
+            placeholderLabel.leadingAnchor.constraint(equalTo: textView.leadingAnchor, constant: leadingPadding)
         ])
     }
     
     private func setupDateField() {
+        let label: UILabel = UILabel()
+        label.font = .boldSystemFont(ofSize: 20)
+        label.text = "Date"
+        label.set(superView: container)
         
+        NSLayoutConstraint.activate([
+            label.topAnchor.constraint(equalTo: descriptionField.bottomAnchor, constant: 24),
+            label.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 32),
+            label.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -32)
+        ])
+        
+        dateField.delegate = self
+        dateField.set(superView: container)
+        dateField.textContainer.maximumNumberOfLines = 1
+        dateField.textContainer.lineBreakMode = .byTruncatingTail
+        dateField.font = .systemFont(ofSize: 18)
+        dateField.textContainerInset = UIEdgeInsets(top: 16, left: 46, bottom: 16, right: 14)
+        dateField.isScrollEnabled = false
+        
+        dateField.isUserInteractionEnabled = true
+        dateField.backgroundColor = .systemGray6
+        dateField.layer.cornerRadius = 8
+        
+        NSLayoutConstraint.activate([
+            dateField.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 16),
+            dateField.leadingAnchor.constraint(equalTo: label.leadingAnchor),
+            dateField.trailingAnchor.constraint(equalTo: label.trailingAnchor),
+            dateField.heightAnchor.constraint(equalToConstant: 54),
+            dateField.bottomAnchor.constraint(equalTo: container.bottomAnchor)
+        ])
+        
+        setupCalendarIcon()
+        setupPlaceholderLabel(to: dateField, placeholder: "Select Date", leadingPadding: 48)
+        
+        func setupCalendarIcon() {
+            let imageView: UIImageView = UIImageView(image: UIImage(systemName: "calendar"))
+            imageView.setImageColor(color: .tertiaryLabel)
+            
+            imageView.set(superView: dateField)
+            NSLayoutConstraint.activate([
+                imageView.topAnchor.constraint(equalTo: dateField.topAnchor, constant: 16),
+                imageView.leadingAnchor.constraint(equalTo: dateField.leadingAnchor, constant: 16),
+                imageView.widthAnchor.constraint(equalToConstant: 24)
+            ])
+        }
     }
     
     private func setupTimeField() {
