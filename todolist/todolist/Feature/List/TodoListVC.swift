@@ -58,6 +58,10 @@ extension TodoListVC {
         tableView.separatorStyle = .none
         tableView.showsVerticalScrollIndicator = false
         
+        // MARK: drag and drop UX
+        tableView.dragDelegate = self
+        tableView.dragInteractionEnabled = true
+        
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -84,5 +88,19 @@ extension TodoListVC: UITableViewDelegate, UITableViewDataSource {
         
         cell.task = vm.tasks[indexPath.row]
         return cell
+    }
+}
+
+extension TodoListVC: UITableViewDragDelegate {
+    func tableView(_ tableView: UITableView, itemsForBeginning session: any UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
+        let dragItem: UIDragItem = UIDragItem(itemProvider: NSItemProvider())
+        dragItem.localObject = vm.tasks[indexPath.row]
+        return [dragItem]
+    }
+    
+    func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        let mover: TaskModel = vm.tasks.remove(at: sourceIndexPath.row)
+        vm.tasks.insert(mover, at: destinationIndexPath.row)
+        print(vm.tasks.map( { $0.title }))
     }
 }
