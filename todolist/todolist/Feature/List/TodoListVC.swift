@@ -11,6 +11,8 @@ import UIKit
 class TodoListVC: UIViewController {
     internal lazy var tableView: UITableView = UITableView()
     
+    internal var vm: TodoListVM = TodoListVM()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
@@ -52,6 +54,7 @@ extension TodoListVC {
         tableView.dataSource = self
         tableView.estimatedRowHeight = UITableView.automaticDimension
         tableView.rowHeight = UITableView.automaticDimension
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "UITableViewCell")
         
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -63,15 +66,20 @@ extension TodoListVC {
     
     @objc private func rightButtonAction(_ sender: UIBarButtonItem) {
         print("Open form page")
+        print(Date.localDate())
     }
 }
 
 extension TodoListVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 0
+        return vm.tasks.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return UITableViewCell()
+        let task: TaskModel = vm.tasks[indexPath.row]
+        let cell: UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "UITableViewCell", for: indexPath)
+        cell.textLabel?.text = task.date.timeFormatted
+        cell.detailTextLabel?.text = task.date.timeFormatted
+        return cell
     }
 }
