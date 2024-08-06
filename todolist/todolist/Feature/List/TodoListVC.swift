@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 class TodoListVC: UIViewController {
-    internal lazy var tableView: UITableView = UITableView()
+    internal lazy var tableView: UITableView = UITableView(frame: .zero, style: .plain)
     
     internal var vm: TodoListVM = TodoListVM()
     
@@ -56,6 +56,7 @@ extension TodoListVC {
         tableView.rowHeight = UITableView.automaticDimension
         tableView.register(TaskCell.self, forCellReuseIdentifier: TaskCell.reuseIdentifier)
         tableView.separatorStyle = .none
+        tableView.sectionHeaderTopPadding = 0
         tableView.showsVerticalScrollIndicator = false
         
         // MARK: drag and drop UX
@@ -77,8 +78,17 @@ extension TodoListVC {
 }
 
 extension TodoListVC: UITableViewDelegate, UITableViewDataSource {
+    private func dateFor(section: Int) -> Date {
+        return Calendar.current.startOfDay(for: Date().toLocalDate()).getFutureDay(amount: section)
+    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        vm.groupedTasks.count
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return vm.tasks.count
+        let date: Date = dateFor(section: section)
+        return vm.groupedTasks[date]?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -97,6 +107,32 @@ extension TodoListVC: UITableViewDelegate, UITableViewDataSource {
             tableView.moveRow(at: actualIndexPath, to: IndexPath(row: index, section: 0))
         }
         return cell
+    }
+    
+    // MARK: section header
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return nil
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let header: UIView = UIView()
+        header.backgroundColor = .systemGray6
+        let label: UILabel = UILabel()
+        label.text = dateFor(section: section).formattedDateForDisplay
+        label.font = .boldSystemFont(ofSize: 16)
+        label.set(superView: header)
+        let padding: CGFloat = 16
+        NSLayoutConstraint.activate([
+            label.topAnchor.constraint(equalTo: header.topAnchor, constant: padding),
+            label.leadingAnchor.constraint(equalTo: header.leadingAnchor, constant: padding),
+            label.trailingAnchor.constraint(equalTo: header.trailingAnchor, constant: -padding),
+            label.bottomAnchor.constraint(equalTo: header.bottomAnchor, constant: -padding)
+        ])
+        return header
+    }
+    
+    func tableView(_ tableView: UITableView, estimatedHeightForFooterInSection section: Int) -> CGFloat {
+        return 0
     }
 }
 
