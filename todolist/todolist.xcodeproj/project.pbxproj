@@ -19,7 +19,6 @@
 		B2303DE22C6202CE00BF6A38 /* CheckboxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2303DE12C6202CE00BF6A38 /* CheckboxView.swift */; };
 		B2303DE42C62210C00BF6A38 /* CreateTaskVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2303DE32C62210C00BF6A38 /* CreateTaskVC.swift */; };
 		B2303DE62C62215700BF6A38 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2303DE52C62215700BF6A38 /* Router.swift */; };
-		B2303DE82C6226C600BF6A38 /* PaddedTextFeild.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2303DE72C6226C600BF6A38 /* PaddedTextFeild.swift */; };
 		B2303DEA2C6226E300BF6A38 /* UIImageView+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2303DE92C6226E300BF6A38 /* UIImageView+Ext.swift */; };
 /* End PBXBuildFile section */
 
@@ -38,7 +37,6 @@
 		B2303DE12C6202CE00BF6A38 /* CheckboxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckboxView.swift; sourceTree = "<group>"; };
 		B2303DE32C62210C00BF6A38 /* CreateTaskVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateTaskVC.swift; sourceTree = "<group>"; };
 		B2303DE52C62215700BF6A38 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
-		B2303DE72C6226C600BF6A38 /* PaddedTextFeild.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddedTextFeild.swift; sourceTree = "<group>"; };
 		B2303DE92C6226E300BF6A38 /* UIImageView+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Ext.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -142,7 +140,6 @@
 			children = (
 				B2303DDD2C61FB1800BF6A38 /* TaskCell.swift */,
 				B2303DE12C6202CE00BF6A38 /* CheckboxView.swift */,
-				B2303DE72C6226C600BF6A38 /* PaddedTextFeild.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -221,7 +218,6 @@
 				B2303DB92C61D6AD00BF6A38 /* AppDelegate.swift in Sources */,
 				B2303DE62C62215700BF6A38 /* Router.swift in Sources */,
 				B2303DE42C62210C00BF6A38 /* CreateTaskVC.swift in Sources */,
-				B2303DE82C6226C600BF6A38 /* PaddedTextFeild.swift in Sources */,
 				B2303DD02C61D6FC00BF6A38 /* TodoListVC.swift in Sources */,
 				B2303DD52C61E11A00BF6A38 /* TaskModel.swift in Sources */,
 				B2303DE02C61FC8500BF6A38 /* UIView+Ext.swift in Sources */,
