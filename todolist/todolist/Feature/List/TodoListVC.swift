@@ -12,6 +12,7 @@ class TodoListVC: UIViewController {
     internal lazy var tableView: UITableView = UITableView(frame: .zero, style: .plain)
     
     internal var vm: TodoListVM = TodoListVM()
+    internal var router: Router = Router.shared
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -72,8 +73,7 @@ extension TodoListVC {
     }
     
     @objc private func rightButtonAction(_ sender: UIBarButtonItem) {
-        print("Open form page")
-        print(Date.localDate())
+        router.openCreateTaskForm(from: self)
     }
 }
 

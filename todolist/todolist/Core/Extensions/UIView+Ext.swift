@@ -18,11 +18,3 @@ public extension UIView {
         return String(describing: Self.self)
     }
 }
-
-extension UIImageView {
-    func setImageColor(color: UIColor) {
-        let templateImage: UIImage? = image?.withRenderingMode(.alwaysTemplate)
-        image = templateImage
-        tintColor = color
-    }
-}
