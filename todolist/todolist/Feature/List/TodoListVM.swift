@@ -9,4 +9,8 @@ import Foundation
 
 class TodoListVM {
     var tasks: [TaskModel] = TaskModel.mockCollection
+    
+    func getFirstCompletedIndex() -> Int {
+        return tasks.firstIndex(where: { $0.isCompleted }) ?? tasks.count
+    }
 }

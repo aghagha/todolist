@@ -12,7 +12,7 @@ class CheckboxView: UIView {
     internal lazy var checkMark: UIImageView = UIImageView(image: UIImage(systemName: "checkmark.square.fill"))
     internal var size: CGFloat = 24
     
-    internal var didSelect: ((Bool) -> ())?
+    internal var didSelect: ((Bool) -> Void)?
     
     internal var isSelected: Bool = false {
         didSet {

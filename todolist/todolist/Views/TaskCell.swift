@@ -28,6 +28,8 @@ class TaskCell: UITableViewCell {
         }
     }
     
+    internal var didComplete: (() -> Void)?
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupView()
@@ -66,6 +68,9 @@ extension TaskCell {
         checkbox.set(superView: containerView)
         checkbox.didSelect = { [weak self] selected in
             self?.task?.isCompleted = selected
+            if selected {
+                self?.didComplete?()
+            }
         }
         
         NSLayoutConstraint.activate([

@@ -87,6 +87,15 @@ extension TodoListVC: UITableViewDelegate, UITableViewDataSource {
         }
         
         cell.task = vm.tasks[indexPath.row]
+        cell.didComplete = { [weak self] in
+            guard let self = self, let actualIndexPath = tableView.indexPath(for: cell) else {
+                return
+            }
+            let mover: TaskModel = self.vm.tasks.remove(at: actualIndexPath.row)
+            let index: Int = self.vm.getFirstCompletedIndex()
+            self.vm.tasks.insert(mover, at: index - 1)
+            tableView.moveRow(at: actualIndexPath, to: IndexPath(row: index, section: 0))
+        }
         return cell
     }
 }
