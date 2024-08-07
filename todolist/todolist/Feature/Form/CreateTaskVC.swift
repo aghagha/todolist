@@ -406,9 +406,53 @@ extension CreateTaskVC: UITextViewDelegate {
     }
     
     func textViewDidChange(_ textView: UITextView) {
+        adjustPlaceholderVisibility(of: textView)
+    }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        highlightToday(in: textView)
+    }
+    
+    private func highlightToday(in textView: UITextView) {
+        guard textView == titleField else {
+            return
+        }
+        
+        let keyword: String = "today"
+        var text: String = ""
+        if !textView.text.isEmpty {
+            text = textView.text
+            textView.text = nil
+        } else if !textView.attributedText.string.isEmpty {
+            text = textView.attributedText.string
+        }
+        
+        let fullRange: NSRange = NSRange(location: 0, length: text.count)
+        let attributedString: NSMutableAttributedString = NSMutableAttributedString(string: text)
+        attributedString.addAttribute(.font, value: textView.font!, range: fullRange)
+        attributedString.addAttribute(.foregroundColor, value: UIColor.black, range: fullRange)
+        
+        let regex = try! NSRegularExpression(pattern: keyword, options: [])
+        let matches = regex.matches(in: text.lowercased(), options: [], range: fullRange)
+        
+        for match in matches {
+            let range = match.range
+            let attributes: [NSAttributedString.Key: Any] = [
+                .foregroundColor: UIColor.white,
+                .backgroundColor: UIColor.purple
+            ]
+            attributedString.addAttributes(attributes, range: range)
+        }
+        
+        textView.attributedText = attributedString
+        selectedDate = Date.localDate()
+        adjustPlaceholderVisibility(of: textView)
+    }
+    
+    private func adjustPlaceholderVisibility(of textView: UITextView) {
         guard let placeholderLabel = textView.subviews.first(where: { $0.tag == -1 }) else {
              return
         }
-        placeholderLabel.isHidden = !textView.text.isEmpty
+        placeholderLabel.isHidden = !textView.text.isEmpty || !textView.attributedText.string.isEmpty
     }
 }
