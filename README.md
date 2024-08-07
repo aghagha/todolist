@@ -30,3 +30,15 @@ This app was made as a submission for a job interview. It was made in less than 
 - This is still using a static, dummy data. Each app restart will wipe the data. Will need to migrate to a local database if time allows (eg. CoreData)
 
 # Watch it in action!
+
+**Adding Task...**
+<iframe src="https://giphy.com/embed/mpU6UoVHJUvG6AelV7" width="222" height="480" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><href="https://giphy.com/gifs/mpU6UoVHJUvG6AelV7"></p>
+
+**Mark completed task**
+<iframe src="https://giphy.com/embed/4Qfe8TYPi5mzl3TGQJ" width="222" height="480" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><href="https://giphy.com/gifs/4Qfe8TYPi5mzl3TGQJ"></p>
+
+**Edit task!**
+<iframe src="https://giphy.com/embed/SfyXLkNk82bSmpDZ38" width="222" height="480" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><href="https://giphy.com/gifs/SfyXLkNk82bSmpDZ38"></p>
+
+**Delete unneeded task..**
+<iframe src="https://giphy.com/embed/QeghU88rPdzO3GoWAi" width="222" height="480" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><href="https://giphy.com/gifs/QeghU88rPdzO3GoWAi"></p>
