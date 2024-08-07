@@ -11,8 +11,9 @@ import UIKit
 class Router {
     public static var shared = Router()
     
-    func openCreateTaskForm(from vc: UIViewController) {
+    func openCreateTaskForm(from vc: UIViewController, completion: ((TaskModel) -> Void)?) {
         let form: CreateTaskVC = CreateTaskVC()
+        form.didSaveTask = completion
         vc.navigationController?.pushViewController(form, animated: true)
     }
     

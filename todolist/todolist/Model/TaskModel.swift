@@ -8,12 +8,12 @@
 import Foundation
 
 struct TaskModel {
-    var id: UUID
-    var title: String
-    var description: String
-    var isCompleted: Bool
-    var date: Date
-    var hasTime: Bool
+    var id: UUID = UUID()
+    var title: String = ""
+    var description: String = ""
+    var isCompleted: Bool = false
+    var date: Date = Date()
+    var hasTime: Bool = false
     
     var dateWithoutTime: Date {
         Calendar.current.startOfDay(for: date)

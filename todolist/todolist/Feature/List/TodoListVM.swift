@@ -10,12 +10,12 @@ import Foundation
 class TodoListVM {
     var tasks: [TaskModel] = TaskModel.mockCollection
     var tasksStartingToday: [TaskModel] {
-        tasks.filter {
+        return tasks.filter {
             Calendar.current.isDateInToday($0.date) || $0.date > Date().toLocalDate()
         }
     }
     var groupedTasks: [Date: [TaskModel]] {
-        Dictionary(grouping: tasksStartingToday, by: \.dateWithoutTime)
+        return Dictionary(grouping: tasksStartingToday, by: \.dateWithoutTime)
     }
     
     func getFirstCompletedIndex() -> Int {

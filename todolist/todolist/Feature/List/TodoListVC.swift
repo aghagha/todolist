@@ -73,7 +73,12 @@ extension TodoListVC {
     }
     
     @objc private func rightButtonAction(_ sender: UIBarButtonItem) {
-        router.openCreateTaskForm(from: self)
+        router.openCreateTaskForm(from: self) { [weak self] task in
+            self?.vm.tasks.append(task)
+            DispatchQueue.main.async {
+                self?.tableView.reloadData()
+            }
+        }
     }
 }
 

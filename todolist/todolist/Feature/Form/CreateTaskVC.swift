@@ -18,6 +18,8 @@ class CreateTaskVC: UIViewController {
     internal lazy var dateField: UITextView = UITextView()
     internal lazy var timeField: UITextView = UITextView()
     
+    internal var didSaveTask: ((TaskModel) -> Void)?
+    
     internal var router: Router = Router.shared
     
     private var selectedDate: Date? {
@@ -56,6 +58,7 @@ extension CreateTaskVC {
         setupDescriptionField()
         setupDateField()
         setupTimeField()
+        setupButtons()
     }
     
     private func setupScrollView() {
@@ -260,8 +263,7 @@ extension CreateTaskVC {
         NSLayoutConstraint.activate([
             timeField.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 16),
             timeField.leadingAnchor.constraint(equalTo: dateField.leadingAnchor),
-            timeField.trailingAnchor.constraint(equalTo: dateField.trailingAnchor),
-            timeField.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -32)
+            timeField.trailingAnchor.constraint(equalTo: dateField.trailingAnchor)
         ])
         
         setupPlaceholderLabel(to: timeField, placeholder: "Set time")
@@ -269,8 +271,81 @@ extension CreateTaskVC {
         
     }
     
+    private func setupButtons() {
+        let stackView: UIStackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.distribution = .fillEqually
+        stackView.spacing = 16
+        
+        stackView.set(superView: container)
+        stackView.addArrangedSubview(
+            makeButton(
+                title: "Cancel",
+                foregroundColor: .systemBlue,
+                backgroundColor: .white,
+                action: #selector(cancelClicked))
+        )
+        
+        stackView.addArrangedSubview(
+            makeButton(
+                title: "Save",
+                foregroundColor: .white,
+                backgroundColor: .systemBlue,
+                action: #selector(confirmClicked))
+        )
+        
+        NSLayoutConstraint.activate([
+            stackView.topAnchor.constraint(greaterThanOrEqualTo: timeField.bottomAnchor, constant: 32),
+            stackView.leadingAnchor.constraint(equalTo: dateField.leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: dateField.trailingAnchor),
+            stackView.bottomAnchor.constraint(equalTo: container.bottomAnchor),
+            stackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -32)
+        ])
+        
+        func makeButton(title: String, foregroundColor: UIColor, backgroundColor: UIColor, action: Selector) -> UIButton {
+            let button: UIButton = UIButton()
+            var configuration: UIButton.Configuration = .plain()
+            configuration.background.backgroundColor = backgroundColor
+            configuration.title = title
+            configuration.baseForegroundColor = foregroundColor
+            configuration.contentInsets = .init(top: 8, leading: 12, bottom: 8, trailing: 12)
+            button.configuration = configuration
+            button.layer.borderColor = UIColor.systemBlue.cgColor
+            button.layer.borderWidth = 1
+            button.layer.cornerRadius = 4
+            button.addTarget(self, action: action, for: .touchUpInside)
+            
+            return button
+        }
+    }
+    
     @objc func didToggleSwitch(sender: UISwitch) {
         isUsingTime = sender.isOn
+    }
+    
+    @objc func cancelClicked() {
+        navigationController?.popViewController(animated: true)
+    }
+    
+    @objc func confirmClicked() {
+        guard titleField.text != nil, let date = selectedDate else {
+            // show toast
+            return
+        }
+        
+        var taskModel: TaskModel = TaskModel()
+        taskModel.title = titleField.text
+        if let description = descriptionField.text {
+            taskModel.description = description
+        }
+        taskModel.date = date.toLocalDate()
+        if isUsingTime, let hour = selectedTime?.hour, let minute = selectedTime?.minute {
+            taskModel.date = taskModel.date.setTime(hour: hour, minute: minute).toLocalDate()
+        }
+        taskModel.hasTime = isUsingTime
+        didSaveTask?(taskModel)
+        
+        navigationController?.popViewController(animated: true)
     }
 }
 
