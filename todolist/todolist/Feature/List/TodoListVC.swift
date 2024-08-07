@@ -141,6 +141,30 @@ extension TodoListVC: UITableViewDelegate, UITableViewDataSource {
         }
     }
     
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        guard editingStyle == .delete else {
+            return
+        }
+        
+        router.presetDeleteConfirmation(from: self) { [weak self] in
+            if let task = self?.task(for: indexPath) {
+                self?.vm.tasks.removeAll(where: { $0.id == task.id })
+            }
+            DispatchQueue.main.async {
+                if self?.tableView.numberOfRows(inSection: indexPath.section) == 1 {
+                    self?.tableView.deleteSections([indexPath.section], with: .left)
+                    return
+                }
+                self?.tableView.deleteRows(at: [indexPath], with: .left)
+                MySnackbar.show(in: self!.view, message: "Task deleted!", color: .systemRed)
+            }
+        }
+    }
+    
     // MARK: section header
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return nil

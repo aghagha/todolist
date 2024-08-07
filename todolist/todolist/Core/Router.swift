@@ -34,4 +34,10 @@ class Router {
         timePicker.didSelectDate = closure
         vc.present(timePicker, animated: true)
     }
+    
+    func presetDeleteConfirmation(from vc: UIViewController, closure: (() -> Void)?) {
+        let modal: DeleteConfimationVC = DeleteConfimationVC()
+        modal.didDelete = closure
+        vc.present(modal, animated: true)
+    }
 }

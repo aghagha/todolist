@@ -79,7 +79,7 @@ extension CreateTaskVC {
         if let description = descriptionField.text {
             taskModel.description = description
         }
-        taskModel.date = date.toLocalDate()
+        taskModel.date = Calendar.current.startOfDay(for: date)
         if isUsingTime, let hour = selectedTime?.hour, let minute = selectedTime?.minute {
             taskModel.date = taskModel.date.setTime(hour: hour, minute: minute)
         }
