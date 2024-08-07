@@ -164,13 +164,30 @@ extension TodoListVC: UITableViewDelegate, UITableViewDataSource {
 extension TodoListVC: UITableViewDragDelegate {
     func tableView(_ tableView: UITableView, itemsForBeginning session: any UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
         let dragItem: UIDragItem = UIDragItem(itemProvider: NSItemProvider())
-        dragItem.localObject = vm.tasks[indexPath.row]
+        dragItem.localObject = task(for: indexPath)
         return [dragItem]
     }
     
     func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-        let mover: TaskModel = vm.tasks.remove(at: sourceIndexPath.row)
-        vm.tasks.insert(mover, at: destinationIndexPath.row)
-        print(vm.tasks.map( { $0.title }))
+        var draggedItem: TaskModel? = task(for: sourceIndexPath)
+        vm.tasks.removeAll(where: { $0.id == draggedItem?.id })
+        var dateAtIndexPath: Date = dateFor(section: destinationIndexPath.section)
+        if draggedItem?.hasTime ?? false {
+            dateAtIndexPath = dateAtIndexPath.setTime(hour: draggedItem?.date.hour ?? 0, minute: draggedItem?.date.minute ?? 0)
+        }
+        draggedItem?.date = dateAtIndexPath
+        
+        let firstIndexOfSameDay: Int = vm.tasks.firstIndex(where: { $0.dateWithoutTime == dateAtIndexPath }) ?? 0
+        
+        vm.tasks.insert(draggedItem!, at: firstIndexOfSameDay + destinationIndexPath.row)
+        print(vm.groupedTasks)
+    }
+    
+    func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+        let shouldMove: Bool = self.tableView(tableView, numberOfRowsInSection: indexPath.section) > 1
+        if !shouldMove {
+            MySnackbar.show(in: view, message: "Can't move item, edit it directly instead", color: .systemRed)
+        }
+        return shouldMove
     }
 }
