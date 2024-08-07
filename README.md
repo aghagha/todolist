@@ -32,13 +32,20 @@ This app was made as a submission for a job interview. It was made in less than 
 # Watch it in action!
 
 **Adding Task...**
-<iframe src="https://giphy.com/embed/mpU6UoVHJUvG6AelV7" width="222" height="480" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><href="https://giphy.com/gifs/mpU6UoVHJUvG6AelV7"></p>
+
+![](https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExN2FtdzUza3FpNWJxanRseXV2bnc4bWp4cHVqZml3MnU5MnYzd2x6bSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/mpU6UoVHJUvG6AelV7/giphy.gif)
+
 
 **Mark completed task**
-<iframe src="https://giphy.com/embed/4Qfe8TYPi5mzl3TGQJ" width="222" height="480" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><href="https://giphy.com/gifs/4Qfe8TYPi5mzl3TGQJ"></p>
+
+![](https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMjlsZXM4YTNmNGRsbDRxMDZ2bGV2cHk0OTJudjZ0cTZmOWw2bTd1OSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/4Qfe8TYPi5mzl3TGQJ/giphy.gif)
+
 
 **Edit task!**
-<iframe src="https://giphy.com/embed/SfyXLkNk82bSmpDZ38" width="222" height="480" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><href="https://giphy.com/gifs/SfyXLkNk82bSmpDZ38"></p>
+
+![](https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZDFxb2d3bGtsenRhaGhkaTFiM2hqNXh6NXV6cTFnb3A0MWlieGsxbiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/SfyXLkNk82bSmpDZ38/giphy.gif)
+
 
 **Delete unneeded task..**
-<iframe src="https://giphy.com/embed/QeghU88rPdzO3GoWAi" width="222" height="480" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><href="https://giphy.com/gifs/QeghU88rPdzO3GoWAi"></p>
+
+![](https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbWo0NjV1dzI5YTBjd3AxOWYxY3d6MWJ4dnR4azFwdXlzNThjbXg3NSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/QeghU88rPdzO3GoWAi/giphy.gif)
