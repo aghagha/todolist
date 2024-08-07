@@ -76,6 +76,7 @@ extension TodoListVC {
         router.openCreateTaskForm(from: self) { [weak self] task in
             self?.vm.tasks.append(task)
             DispatchQueue.main.async {
+                MySnackbar.show(in: self!.view, message: "Task added!")
                 self?.tableView.reloadData()
             }
         }
@@ -126,6 +127,7 @@ extension TodoListVC: UITableViewDelegate, UITableViewDataSource {
             if let index = self?.vm.tasks.firstIndex(where: { $0.id == task.id }) {
                 self?.vm.tasks[index] = task
             }
+            MySnackbar.show(in: self!.view, message: "Task updated!")
             DispatchQueue.main.async {
                 self?.tableView.reloadData()
             }

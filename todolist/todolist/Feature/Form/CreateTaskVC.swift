@@ -352,8 +352,13 @@ extension CreateTaskVC {
     }
     
     @objc func confirmClicked() {
-        guard titleField.text != nil, let date = selectedDate else {
-            // show toast
+        guard titleField.text != nil, !titleField.text.isEmpty else {
+            MySnackbar.show(in: self.view, message: "Title can't be empty", color: .systemRed)
+            return
+        }
+        
+        guard let date = selectedDate else {
+            MySnackbar.show(in: self.view, message: "Date can't be empty", color: .systemRed)
             return
         }
         
