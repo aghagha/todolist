@@ -20,7 +20,8 @@ This app was made as a submission for a job interview. It was made in less than 
 # Features
 - Add your task along with description and date (and time)
 - Mark which task is completed
-- Freely edit and delete any task
+- Freely edit any task
+- Delete task by swiping left at any task. _Changed from the original requirement of hold to delete because it conflicts with the drag and drop behaviour._
 - Able to highlight certain words and set date automatically (for now only "today")
 - Can also move task to the next day by simply drag and drop
 
