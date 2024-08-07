@@ -24,6 +24,7 @@
 		B2303DEC2C62328300BF6A38 /* DatePickerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2303DEB2C62328300BF6A38 /* DatePickerVC.swift */; };
 		B2303DEE2C6246F300BF6A38 /* BasePickerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2303DED2C6246F300BF6A38 /* BasePickerVC.swift */; };
 		B26FA4972C6311A900149480 /* MySnackbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26FA4962C6311A900149480 /* MySnackbar.swift */; };
+		B26FA4992C631A1000149480 /* CreateTaskVC+View.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26FA4982C631A1000149480 /* CreateTaskVC+View.swift */; };
 		B2B7FB872C62491C0010B6B1 /* TimePickerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B7FB862C62491C0010B6B1 /* TimePickerVC.swift */; };
 /* End PBXBuildFile section */
 
@@ -48,6 +49,7 @@
 		B2303DEB2C62328300BF6A38 /* DatePickerVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerVC.swift; sourceTree = "<group>"; };
 		B2303DED2C6246F300BF6A38 /* BasePickerVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasePickerVC.swift; sourceTree = "<group>"; };
 		B26FA4962C6311A900149480 /* MySnackbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MySnackbar.swift; sourceTree = "<group>"; };
+		B26FA4982C631A1000149480 /* CreateTaskVC+View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CreateTaskVC+View.swift"; sourceTree = "<group>"; };
 		B2B7FB862C62491C0010B6B1 /* TimePickerVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimePickerVC.swift; sourceTree = "<group>"; };
 		D6F2270FD7C879B9A7F63C33 /* Pods-todolist.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-todolist.debug.xcconfig"; path = "Target Support Files/Pods-todolist/Pods-todolist.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -139,6 +141,7 @@
 				B2303DEB2C62328300BF6A38 /* DatePickerVC.swift */,
 				B2303DED2C6246F300BF6A38 /* BasePickerVC.swift */,
 				B2B7FB862C62491C0010B6B1 /* TimePickerVC.swift */,
+				B26FA4982C631A1000149480 /* CreateTaskVC+View.swift */,
 			);
 			path = Form;
 			sourceTree = "<group>";
@@ -302,6 +305,7 @@
 				B2303DD02C61D6FC00BF6A38 /* TodoListVC.swift in Sources */,
 				B26FA4972C6311A900149480 /* MySnackbar.swift in Sources */,
 				B2303DD52C61E11A00BF6A38 /* TaskModel.swift in Sources */,
+				B26FA4992C631A1000149480 /* CreateTaskVC+View.swift in Sources */,
 				B2303DE02C61FC8500BF6A38 /* UIView+Ext.swift in Sources */,
 				B2303DDE2C61FB1800BF6A38 /* TaskCell.swift in Sources */,
 				B2303DEA2C6226E300BF6A38 /* UIImageView+Ext.swift in Sources */,
