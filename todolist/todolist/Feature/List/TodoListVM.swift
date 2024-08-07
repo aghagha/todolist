@@ -18,7 +18,7 @@ class TodoListVM {
         return Dictionary(grouping: tasksStartingToday, by: \.dateWithoutTime)
     }
     
-    func getFirstCompletedIndex() -> Int {
-        return tasks.firstIndex(where: { $0.isCompleted }) ?? tasks.count
+    func getFirstCompletedIndex(in date: Date) -> Int {
+        return groupedTasks[date]?.firstIndex(where: { $0.isCompleted }) ?? (groupedTasks[date]?.count ?? 0)
     }
 }

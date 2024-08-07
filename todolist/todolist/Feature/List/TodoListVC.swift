@@ -113,10 +113,17 @@ extension TodoListVC: UITableViewDelegate, UITableViewDataSource {
             guard let self = self, let actualIndexPath = tableView.indexPath(for: cell) else {
                 return
             }
-            let mover: TaskModel = self.vm.tasks.remove(at: actualIndexPath.row)
-            let index: Int = self.vm.getFirstCompletedIndex()
-            self.vm.tasks.insert(mover, at: index - 1)
-            tableView.moveRow(at: actualIndexPath, to: IndexPath(row: index, section: 0))
+            
+            let task: TaskModel? = self.task(for: actualIndexPath)
+            let index: Int = self.vm.getFirstCompletedIndex(in: self.dateFor(section: actualIndexPath.section))
+            let firstIndexOfSameDay: Int = vm.tasks.firstIndex(where: { $0.dateWithoutTime == task?.dateWithoutTime }) ?? 0
+            
+            vm.tasks.removeAll(where: { $0.id == task?.id })
+            
+            let destinationIndexPath: IndexPath = IndexPath(row: index - 1, section: actualIndexPath.section)
+            vm.tasks.insert(task!, at: firstIndexOfSameDay + index)
+            
+            tableView.moveRow(at: actualIndexPath, to: destinationIndexPath)
         }
         return cell
     }
@@ -169,6 +176,18 @@ extension TodoListVC: UITableViewDragDelegate {
     }
     
     func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        moveCell(from: sourceIndexPath, to: destinationIndexPath)
+    }
+    
+    func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+        let shouldMove: Bool = self.tableView(tableView, numberOfRowsInSection: indexPath.section) > 1
+        if !shouldMove {
+            MySnackbar.show(in: view, message: "Can't move item, edit it directly instead", color: .systemRed)
+        }
+        return shouldMove
+    }
+    
+    private func moveCell(from sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
         var draggedItem: TaskModel? = task(for: sourceIndexPath)
         vm.tasks.removeAll(where: { $0.id == draggedItem?.id })
         var dateAtIndexPath: Date = dateFor(section: destinationIndexPath.section)
@@ -180,14 +199,5 @@ extension TodoListVC: UITableViewDragDelegate {
         let firstIndexOfSameDay: Int = vm.tasks.firstIndex(where: { $0.dateWithoutTime == dateAtIndexPath }) ?? 0
         
         vm.tasks.insert(draggedItem!, at: firstIndexOfSameDay + destinationIndexPath.row)
-        print(vm.groupedTasks)
-    }
-    
-    func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        let shouldMove: Bool = self.tableView(tableView, numberOfRowsInSection: indexPath.section) > 1
-        if !shouldMove {
-            MySnackbar.show(in: view, message: "Can't move item, edit it directly instead", color: .systemRed)
-        }
-        return shouldMove
     }
 }
