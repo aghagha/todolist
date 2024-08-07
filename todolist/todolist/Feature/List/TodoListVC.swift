@@ -220,7 +220,7 @@ extension TodoListVC: UITableViewDragDelegate {
         }
         draggedItem?.date = dateAtIndexPath
         
-        let firstIndexOfSameDay: Int = vm.tasks.firstIndex(where: { $0.dateWithoutTime == dateAtIndexPath }) ?? 0
+        let firstIndexOfSameDay: Int = vm.tasks.firstIndex(where: { Calendar.current.isDate($0.date, equalTo: dateAtIndexPath, toGranularity: .day) }) ?? 0
         
         vm.tasks.insert(draggedItem!, at: firstIndexOfSameDay + destinationIndexPath.row)
     }
