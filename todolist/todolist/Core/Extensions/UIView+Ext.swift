@@ -18,3 +18,12 @@ public extension UIView {
         return String(describing: Self.self)
     }
 }
+
+public extension UINavigationController {
+    public func popViewController(animated: Bool = true, _ completion: (() -> Void)? = nil) {
+        CATransaction.begin()
+        CATransaction.setCompletionBlock(completion)
+        popViewController(animated: animated)
+        CATransaction.commit()
+    }
+}

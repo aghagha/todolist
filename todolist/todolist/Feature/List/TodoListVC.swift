@@ -84,7 +84,8 @@ extension TodoListVC {
 
 extension TodoListVC: UITableViewDelegate, UITableViewDataSource {
     private func dateFor(section: Int) -> Date {
-        return Calendar.current.startOfDay(for: Date().toLocalDate()).getFutureDay(amount: section)
+        let dates: [Date] = Array(vm.groupedTasks.keys).sorted(by: { $0 < $1 } )
+        return dates[section]
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -97,11 +98,13 @@ extension TodoListVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell: TaskCell = tableView.dequeueReusableCell(withIdentifier: TaskCell.reuseIdentifier, for: indexPath) as? TaskCell else {
+        
+        let date: Date = dateFor(section: indexPath.section)
+        guard let cell: TaskCell = tableView.dequeueReusableCell(withIdentifier: TaskCell.reuseIdentifier, for: indexPath) as? TaskCell, let task = vm.groupedTasks[date]?[indexPath.row] else {
             return UITableViewCell()
         }
         
-        cell.task = vm.tasks[indexPath.row]
+        cell.task = task
         cell.didComplete = { [weak self] in
             guard let self = self, let actualIndexPath = tableView.indexPath(for: cell) else {
                 return

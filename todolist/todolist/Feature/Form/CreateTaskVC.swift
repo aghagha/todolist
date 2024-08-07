@@ -340,12 +340,12 @@ extension CreateTaskVC {
         }
         taskModel.date = date.toLocalDate()
         if isUsingTime, let hour = selectedTime?.hour, let minute = selectedTime?.minute {
-            taskModel.date = taskModel.date.setTime(hour: hour, minute: minute).toLocalDate()
+            taskModel.date = taskModel.date.setTime(hour: hour, minute: minute)
         }
         taskModel.hasTime = isUsingTime
-        didSaveTask?(taskModel)
-        
-        navigationController?.popViewController(animated: true)
+        navigationController?.popViewController(animated: true) { [weak self] in
+            self?.didSaveTask?(taskModel)
+        }
     }
 }
 
