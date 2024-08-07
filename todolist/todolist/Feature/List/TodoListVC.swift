@@ -88,6 +88,11 @@ extension TodoListVC: UITableViewDelegate, UITableViewDataSource {
         return dates[section]
     }
     
+    private func task(for indexPath: IndexPath) -> TaskModel? {
+        let date: Date = dateFor(section: indexPath.section)
+        return vm.groupedTasks[date]?[indexPath.row]
+    }
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         vm.groupedTasks.count
     }
@@ -98,9 +103,7 @@ extension TodoListVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        let date: Date = dateFor(section: indexPath.section)
-        guard let cell: TaskCell = tableView.dequeueReusableCell(withIdentifier: TaskCell.reuseIdentifier, for: indexPath) as? TaskCell, let task = vm.groupedTasks[date]?[indexPath.row] else {
+        guard let cell: TaskCell = tableView.dequeueReusableCell(withIdentifier: TaskCell.reuseIdentifier, for: indexPath) as? TaskCell, let task = task(for: indexPath) else {
             return UITableViewCell()
         }
         
@@ -115,6 +118,18 @@ extension TodoListVC: UITableViewDelegate, UITableViewDataSource {
             tableView.moveRow(at: actualIndexPath, to: IndexPath(row: index, section: 0))
         }
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let task: TaskModel? = task(for: indexPath)
+        router.openCreateTaskForm(from: self, task: task) { [weak self] task in
+            if let index = self?.vm.tasks.firstIndex(where: { $0.id == task.id }) {
+                self?.vm.tasks[index] = task
+            }
+            DispatchQueue.main.async {
+                self?.tableView.reloadData()
+            }
+        }
     }
     
     // MARK: section header

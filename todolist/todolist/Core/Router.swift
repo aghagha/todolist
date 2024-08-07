@@ -11,9 +11,10 @@ import UIKit
 class Router {
     public static var shared = Router()
     
-    func openCreateTaskForm(from vc: UIViewController, completion: ((TaskModel) -> Void)?) {
+    func openCreateTaskForm(from vc: UIViewController, task: TaskModel? = nil, completion: ((TaskModel) -> Void)?) {
         let form: CreateTaskVC = CreateTaskVC()
         form.didSaveTask = completion
+        form.task = task
         vc.navigationController?.pushViewController(form, animated: true)
     }
     
@@ -28,7 +29,7 @@ class Router {
         let timePicker: TimePickerVC = TimePickerVC()
         if let date = selectedDate {
             timePicker.selectedHour = date.hour
-            timePicker.selectedHour = date.minute
+            timePicker.selectedMinute = date.minute
         }
         timePicker.didSelectDate = closure
         vc.present(timePicker, animated: true)

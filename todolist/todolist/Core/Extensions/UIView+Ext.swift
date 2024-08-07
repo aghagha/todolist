@@ -20,7 +20,7 @@ public extension UIView {
 }
 
 public extension UINavigationController {
-    public func popViewController(animated: Bool = true, _ completion: (() -> Void)? = nil) {
+    func popViewController(animated: Bool = true, _ completion: (() -> Void)? = nil) {
         CATransaction.begin()
         CATransaction.setCompletionBlock(completion)
         popViewController(animated: animated)

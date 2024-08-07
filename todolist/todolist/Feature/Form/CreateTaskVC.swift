@@ -16,8 +16,10 @@ class CreateTaskVC: UIViewController {
     internal lazy var descriptionField: UITextView = UITextView()
     internal lazy var descriptionPlaceholderLabel : UILabel = UILabel()
     internal lazy var dateField: UITextView = UITextView()
+    internal lazy var timeToggle: UISwitch = UISwitch()
     internal lazy var timeField: UITextView = UITextView()
     
+    internal var task: TaskModel?
     internal var didSaveTask: ((TaskModel) -> Void)?
     
     internal var router: Router = Router.shared
@@ -25,6 +27,7 @@ class CreateTaskVC: UIViewController {
     private var selectedDate: Date? {
         didSet {
             dateField.text = selectedDate?.formattedDateForDisplay ?? ""
+            textViewDidChange(dateField)
         }
     }
     
@@ -40,6 +43,7 @@ class CreateTaskVC: UIViewController {
                 return
             }
             timeField.text = date.timeFormatted
+            textViewDidChange(timeField)
         }
     }
     
@@ -59,6 +63,7 @@ extension CreateTaskVC {
         setupDateField()
         setupTimeField()
         setupButtons()
+        setupValueIfNeeded()
     }
     
     private func setupScrollView() {
@@ -236,16 +241,15 @@ extension CreateTaskVC {
             label.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 16)
         ])
         
-        let toggle: UISwitch = UISwitch()
-        toggle.isOn = false
-        toggle.onTintColor = .systemBlue
-        toggle.addTarget(self, action: #selector(didToggleSwitch(sender:)), for: .valueChanged)
-        toggle.set(superView: container)
+        timeToggle.isOn = false
+        timeToggle.onTintColor = .systemBlue
+        timeToggle.addTarget(self, action: #selector(didToggleSwitch(sender:)), for: .valueChanged)
+        timeToggle.set(superView: container)
         
         NSLayoutConstraint.activate([
-            toggle.trailingAnchor.constraint(equalTo: dateField.trailingAnchor),
-            toggle.centerYAnchor.constraint(equalTo: label.centerYAnchor),
-            toggle.heightAnchor.constraint(equalToConstant: 24)
+            timeToggle.trailingAnchor.constraint(equalTo: dateField.trailingAnchor),
+            timeToggle.centerYAnchor.constraint(equalTo: label.centerYAnchor),
+            timeToggle.heightAnchor.constraint(equalToConstant: 24)
         ])
         
         timeField.set(superView: container)
@@ -319,6 +323,26 @@ extension CreateTaskVC {
         }
     }
     
+    private func setupValueIfNeeded() {
+        guard let task = task else {
+            return
+        }
+        
+        titleField.text = task.title
+        textViewDidChange(titleField)
+        
+        descriptionField.text = task.description
+        textViewDidChange(descriptionField)
+        
+        selectedDate = task.dateWithoutTime
+        
+        if task.hasTime {
+            timeToggle.setOn(true, animated: true)
+            isUsingTime = task.hasTime
+            selectedTime = task.date
+        }
+    }
+    
     @objc func didToggleSwitch(sender: UISwitch) {
         isUsingTime = sender.isOn
     }
@@ -333,7 +357,7 @@ extension CreateTaskVC {
             return
         }
         
-        var taskModel: TaskModel = TaskModel()
+        var taskModel: TaskModel = task ?? TaskModel()
         taskModel.title = titleField.text
         if let description = descriptionField.text {
             taskModel.description = description
@@ -362,7 +386,6 @@ extension CreateTaskVC: UITextViewDelegate {
                 }
                 self?.dateField.resignFirstResponder()
                 self?.selectedDate = selectedDate
-                self?.textViewDidChange(textView)
             }
         } else {
             router.presentTimePicker(from: self, selectedDate: selectedTime) { [weak self] selectedTime in
@@ -372,7 +395,6 @@ extension CreateTaskVC: UITextViewDelegate {
                 
                 self?.timeField.resignFirstResponder()
                 self?.selectedTime = selectedTime
-                self?.textViewDidChange(textView)
             }
         }
         return false
